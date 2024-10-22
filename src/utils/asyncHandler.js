@@ -1,11 +1,11 @@
 /*that file is used to wrap asynchronous route handler functions in Express.js. This pattern simplifies error handling by catching errors in asynchronous functions and forwarding them to a centralized error handler. */
 //this is one approach using promise
 
-//higher order function, accept a funciron and also return a function
+//higher order function, accept a function and also return a function
 const asyncHandler = (requestHandler) => {
     return (req, res, next) => {
         Promise
-        .resolve(requestHandler(req, res, next))//we are executing the function passed here4
+        .resolve(requestHandler(req, res, next))//we are executing the function passed here
         .catch((err) => next(err))
     }
 }

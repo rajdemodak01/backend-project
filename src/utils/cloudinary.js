@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs"
+import { ApiError } from "./ApiError.js";
 
 
 //we got this from cloudinary docs
@@ -16,7 +17,7 @@ const uploadOnCloudinary=async (localFilePath)=>{
 
         //upload the file into cloudinary
         const response = await cloudinary.uploader.upload(localFilePath,{
-            resource_type: "auto"//we can define here the type of the file
+            resource_type: "auto"//we can define here the type of the file//whether image or video or any other file
         })
         //file has been uploaded successfully
         console.log("file is uploaded on cloudinary", response.url)//response.url will give the url after uploading to cloudinary
@@ -27,5 +28,18 @@ const uploadOnCloudinary=async (localFilePath)=>{
         return null;
     }
 }
+const deleteFromCloudinary = async(localFilePath)=>{
+    if(!localFilePath){
+        console.log("nothing to delete")
+        return
+    }
+    try {
+        const result = await cloudinary.uploader.destroy(localFilePath, { resource_type: 'image' });
+        console.log('File deleted successfully:', result);
+      } catch (error) {
+        console.log('Error deleting the file:', error);
+        throw new ApiError(400, "Error while deleting the avatar");
+      }    
+}
 
-export {uploadOnCloudinary}
+export {uploadOnCloudinary, deleteFromCloudinary}
