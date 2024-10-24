@@ -28,18 +28,29 @@ const uploadOnCloudinary=async (localFilePath)=>{
         return null;
     }
 }
-const deleteFromCloudinary = async(localFilePath)=>{
-    if(!localFilePath){
-        console.log("nothing to delete")
-        return
+const deleteFromCloudinary = async (publicId, resourceType = 'image') => {
+    if (!publicId) {
+        console.log("Nothing to delete, publicId is undefined or null");
+        return;
     }
+
     try {
-        const result = await cloudinary.uploader.destroy(localFilePath, { resource_type: 'image' });
+        console.log('Attempting to delete Cloudinary file with publicId:', publicId);  // Add logging for publicId
+        
+        // Delete the resource from Cloudinary using the public ID
+        const result = await cloudinary.uploader.destroy(publicId, { resource_type: resourceType });
+
+        if (result.result === 'not found') {
+            console.log(`File with publicId ${publicId} not found in Cloudinary`);
+            return result;  // Not an error, just file not found
+        }
+
         console.log('File deleted successfully:', result);
-      } catch (error) {
-        console.log('Error deleting the file:', error);
-        throw new ApiError(400, "Error while deleting the avatar");
-      }    
-}
+        return result;
+    } catch (error) {
+        console.error('Error deleting the file from Cloudinary:', error);  // Log full error details for debugging
+        throw new ApiError(500, `Error while deleting the file from Cloudinary: ${error.message}`);  // Include error message in ApiError
+    }
+};
 
 export {uploadOnCloudinary, deleteFromCloudinary}

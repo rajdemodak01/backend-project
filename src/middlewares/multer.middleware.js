@@ -11,6 +11,6 @@ const storage = multer.diskStorage({
     //it return the local file path
   })
   
-export  const upload = multer({ 
+export const upload = multer({ 
     storage, 
 })

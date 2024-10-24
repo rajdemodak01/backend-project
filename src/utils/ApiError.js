@@ -6,7 +6,6 @@ class ApiError extends Error{
         message="Something went wrong",
         errors=[],
         stack="",//errorStack
-
     ){
         super(message)
         //overwriting

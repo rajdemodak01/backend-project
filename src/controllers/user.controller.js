@@ -304,7 +304,7 @@ const updateUserAvatar=asyncHandler(async(req, res)=>{
 
   //delete previous avatar
   const user1=await User.findById(req.user._id)
-  console.log(user1.avatar);
+  //console.log(user1.avatar);
   if (user1.avatar) {
     const publicId = user1.avatar.split('/').pop().split('.')[0]; // Extracting public ID from Cloudinary URL
     await deleteFromCloudinary(publicId);
@@ -377,7 +377,6 @@ const updateUserCoverImage=asyncHandler(async(req, res)=>{
 const getUserChannelProfile=asyncHandler(async(req, res)=>{
   const {username} =req.params
   //req.params contains route parameters, which are dynamic parts of the URL path that are defined in the route. These parameters are used to capture values from the URL itself.
-  console
 
   console.log("ok")
   if(!username?.trim()){
